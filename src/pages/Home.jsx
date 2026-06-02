@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { projects } from "../data/projects.js";
 
 const skills = [
@@ -15,6 +16,15 @@ const skills = [
 
 export default function Home() {
   const featured = projects.find((p) => p.featured);
+  const location = useLocation();
+
+  useEffect(() => {
+    const id = location.state?.scrollTo;
+    if (id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [location]);
 
   return (
     <>
@@ -25,13 +35,10 @@ export default function Home() {
               <span className="k">Doc</span>Portfolio
             </div>
             <div>
-              <span className="k">Rev</span>2026.06
-            </div>
-            <div>
               <span className="k">Field</span>Full Stack
             </div>
             <div>
-              <span className="k">Status</span>Open
+              <span className="k">Status</span>Open to work
             </div>
           </div>
           <h1 className="name rv d2">Yiranubari</h1>

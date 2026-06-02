@@ -1,6 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Layout({ children }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const goToSection = (id) => (e) => {
+    e.preventDefault();
+    if (location.pathname === "/") {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/", { state: { scrollTo: id } });
+    }
+  };
+
   return (
     <>
       <div className="mast">
@@ -9,10 +22,18 @@ export default function Layout({ children }) {
             Yiranubari
           </Link>
           <nav className="nav">
-            <Link to="/#projects">Projects</Link>
-            <Link to="/#skills">Skills</Link>
-            <Link to="/#featured">Featured</Link>
-            <Link to="/#contact">Contact</Link>
+            <a href="#projects" onClick={goToSection("projects")}>
+              Projects
+            </a>
+            <a href="#skills" onClick={goToSection("skills")}>
+              Skills
+            </a>
+            <a href="#featured" onClick={goToSection("featured")}>
+              Featured
+            </a>
+            <a href="#contact" onClick={goToSection("contact")}>
+              Contact
+            </a>
           </nav>
         </div>
       </div>
