@@ -121,9 +121,7 @@ export default function Home() {
               color: "var(--faint)",
               marginTop: "14px",
             }}
-          >
-            // each skill points to a project. nothing listed without proof.
-          </p>
+          ></p>
         </div>
       </section>
 
