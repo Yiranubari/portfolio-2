@@ -1,18 +1,32 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { projects } from "../data/projects.js";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const project = projects.find((p) => p.slug === slug);
+
+  const handleBack = () => {
+    const hasHistoryState = Boolean(window.history.state);
+    const historyIndex = window.history.state?.idx ?? 0;
+    const hasPreviousEntry = hasHistoryState && historyIndex > 0;
+
+    if (hasPreviousEntry) {
+      navigate(-1);
+      return;
+    }
+
+    navigate("/");
+  };
 
   if (!project) {
     return (
       <div className="detail">
         <div className="wrap">
           <div className="backbar">
-            <Link className="btn" to="/">
+            <button className="btn" type="button" onClick={handleBack}>
               ← Back to all projects
-            </Link>
+            </button>
           </div>
           <p className="mono">Project not found.</p>
         </div>
@@ -38,9 +52,9 @@ export default function ProjectDetail() {
     <div className="detail">
       <div className="wrap">
         <div className="backbar">
-          <Link className="btn" to="/">
+          <button className="btn" type="button" onClick={handleBack}>
             ← Back to all projects
-          </Link>
+          </button>
         </div>
 
         <div className="dhead">
