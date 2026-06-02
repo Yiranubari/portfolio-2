@@ -1,6 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { projects } from "../data/projects.js";
+
+function useTypewriter(text, speed = 45, startDelay = 350) {
+  const [shown, setShown] = useState("");
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    let i = 0;
+    let timer;
+    const start = setTimeout(function tick() {
+      setShown(text.slice(0, i + 1));
+      i++;
+      if (i < text.length) {
+        timer = setTimeout(tick, speed);
+      } else {
+        setDone(true);
+      }
+    }, startDelay);
+
+    return () => {
+      clearTimeout(start);
+      clearTimeout(timer);
+    };
+  }, [text, speed, startDelay]);
+
+  return { shown, done };
+}
 
 const skills = [
   { name: "API Design", ref: "insighta backend" },
@@ -17,6 +43,9 @@ const skills = [
 export default function Home() {
   const featured = projects.find((p) => p.featured);
   const location = useLocation();
+  const { shown: tagline, done: taglineDone } = useTypewriter(
+    "Full stack developer building systems that hold.",
+  );
 
   useEffect(() => {
     const id = location.state?.scrollTo;
@@ -30,27 +59,32 @@ export default function Home() {
     <>
       <header className="hero" id="profile">
         <div className="wrap">
-          <div className="stamp rv d1">
-            <div>
-              <span className="k">Doc</span>Portfolio
+          {taglineDone && (
+            <div className="stamp rv">
+              <div>
+                <span className="k">Doc</span>Portfolio
+              </div>
+              <div>
+                <span className="k">Field</span>Full Stack
+              </div>
+              <div>
+                <span className="k">Status</span>Open to Work
+              </div>
             </div>
-            <div>
-              <span className="k">Field</span>Full Stack
-            </div>
-            <div>
-              <span className="k">Status</span>Open to work
-            </div>
-          </div>
-          <h1 className="name rv d2">Yiranubari</h1>
-          <p className="tag rv d3">
-            Full stack developer building systems that hold.
+          )}
+          <h1 className={"name reveal-up" + (taglineDone ? " in" : "")}>
+            Yiranubari
+          </h1>
+          <p className="tag">
+            {tagline}
+            <span className="caret" aria-hidden="true"></span>
           </p>
-          <p className="blurb rv d3">
+          <p className={"blurb reveal-up" + (taglineDone ? " in" : "")}>
             I care about how software behaves when things go wrong: crashes,
             retries, recovery, and the small correctness details most people
             skip.
           </p>
-          <div className="meta rv d4">
+          <div className={"meta reveal-down" + (taglineDone ? " in" : "")}>
             <div className="c">
               <div className="k">Role</div>
               <div className="v">Full Stack Developer</div>

@@ -602,3 +602,44 @@ h2.big {
     padding: 22px;
   }
 }
+
+.caret {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1em;
+  background: var(--ink);
+  margin-left: 2px;
+  transform: translateY(2px);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(-24px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal-down {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal-up.in,
+.reveal-down.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.blurb.reveal-up {
+  transition-delay: 0.1s;
+}
+.meta.reveal-down {
+  transition-delay: 0.18s;
+}
